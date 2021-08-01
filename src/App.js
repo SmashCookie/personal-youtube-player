@@ -1,25 +1,46 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import youtubeApi from "./API/youtube";
+import Search from "./Components/Search";
+import VideoList from "./Components/VideoList";
+import VideoPlayer from "./Components/VideoPlayer";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export default class App extends React.Component {
+  state = {
+    videoMetaInfo: [],
+    selectedVideoId: null,
+  };
+
+  onVideoSelected = (videoId) => {
+    this.setState({
+      selectedVideoId: videoId,
+    });
+  };
+
+  onSearch = async (keyword) => {
+    const response = await youtubeApi.get("/search", {
+      params: {
+        q: keyword,
+      },
+    });
+
+    this.setState({
+      videoMetaInfo: response.data.items,
+      selectedVideoId: response.data.items[0].id.videoId,
+    });
+
+    console.log(this.state);
+  };
+
+  render() {
+    return (
+      <div className="parent">
+        <Search onSearch={this.onSearch} />
+        <VideoList
+          onVideoSelected={this.onVideoSelected}
+          data={this.state.videoMetaInfo}
+        />
+        <VideoPlayer videoId={this.state.selectedVideoId} />
+      </div>
+    );
+  }
 }
-
-export default App;

@@ -1,0 +1,26 @@
+.video {
+  box-shadow: 0 2px 1px lightgray;
+  border: 1px solid lightgray;
+  border-radius: 2px;
+}
+
+.video > .title {
+  text-align: center;
+  padding: 10px;
+  margin: 0;
+  font-weight: 600;
+  font-size: 14px;
+}
+.video-list {
+  grid-area: 1 / 4 / 6 / 6;
+  overflow: auto;
+}
+
+.video-player {
+    grid-area: 2 / 1 / 4 / 4;
+}
+
+.video-player .video-iframe {
+  width: 100%;
+  height: 100%;
+}
